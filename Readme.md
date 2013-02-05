@@ -2,13 +2,13 @@
 
 Component Hub is an addon for [component](https://github.com/component/component) to help with remote repositories, it can do two things:
 
- 1) *Server:* It is `node` server that translates git component respositories into github-style repository paths. It is like `Contre` in that regard except that it will dynamically pull down the git repositories for you and keep them updated. 
+ 1) *Server:* A `node` server that dynamically clones git repositories based on github-style paths. It serves up components like [Contre](https://github.com/godmodelabs/contre) does except that it will dynamically pull down the git repositories for you and keep them updated.
 
  A request comes in for /:user/:project/:version/component.json and the hub server will find the repository and clone it if it hasn't already, or update it if it has a copy. Then it just serves the files up to the `Component` installer.
 
  The repositories are configured via a `hub.json` file that maps the component name to a git location. The git location can be anywhere.
 
- 2) *NPM*: It is also an npm module and command, so that you can call `hub install` and it will fire up the server on demand and install the components, then shut the server down.
+ 2) *NPM*: It is also an npm module and command, so that you can call `hub install` and it will fire up the server on demand and install the components, then shut the server down. It basically wraps `component install` with starting and stopping the server.
 
  When running as a command, it will store the downloaded git repos by default in `~/.component-hub/repos`. It will also look for a `hub.json` in the current working directory. Both of these can be set with environment variables to be wherever you want. Namely, `HUB_REPOS_CACHE` and `HUB_REPOS_JSON`.
 
@@ -19,17 +19,17 @@ Component Hub is an addon for [component](https://github.com/component/component
 
 ## Server Usage
 
-  $ node app.js
+  `$ node app.js`
 
 
 ## NPM Install
 
-  $ npm install -g component-hub
+  `$ npm install -g component-hub`
 
 
 ## NPM Usage
 
-Once this is in place, you can run `hub install` from the directory where you would usually run `component install`.
+Once this is in place, you can run `hub install` from the directory where you would usually run `component install`. Any additional arguments are passed along to `component install`.
 
 
 ## hub.json
