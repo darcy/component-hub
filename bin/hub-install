@@ -1,0 +1,70 @@
+#!/usr/bin/env node
+
+var program = require('commander')
+  , path = require('path')
+  , fs = require('fs')
+  , exists = fs.existsSync
+  , mkdirp = require('mkdirp');
+
+// usage
+
+program
+  .usage('[name ...]')
+  .option('-d, --dev', 'install development dependencies')
+  .option('-o, --out <dir>', 'output components to the given <dir>')
+  .option('-f, --force', 'force installation even if previously installed')
+
+// sub-command help
+
+program.on('--help', function(){
+  console.log('  Examples:');
+  console.log();
+  console.log('    # starts and stop s the hub server for remote component installs');
+  console.log('    $ hub install');
+  console.log();
+  process.exit();
+});
+
+// parse argv
+
+program.parse(process.argv);
+
+var args = process.argv.slice(2).join(" ");//.gsub("-p");
+
+function getUserHome() {
+  return process.env[(process.platform == 'win32') ? 'USERPROFILE' : 'HOME'];
+}
+
+if (typeof process.env.HUB_REPOS_CACHE === 'undefined')
+  process.env.HUB_REPOS_CACHE = getUserHome() + '/.component-hub/repos';
+
+if (typeof process.env.HUB_REPOS_JSON === 'undefined') {
+  if (fs.existsSync(getUserHome() + '/.component-hub/hub.json')) {
+    process.env.HUB_REPOS_JSON = getUserHome() + '/.component-hub/hub.json';    
+  } else {
+    if (fs.existsSync(path.resolve('./hub.json'))) {
+      process.env.HUB_REPOS_JSON = path.resolve("./hub.json");  
+    } else {
+      console.log('Could not find hub.json file. Make sure you have either set the HUB_REPOS_JSON environment variable to its location, or have it at ~/.component-hub/hub.json, or in this working directory.')
+      process.exit()
+    }
+  }
+}
+
+mkdirp(process.env.HUB_REPOS_CACHE, function(err) {
+  if (err) return callback(err);
+  var server = require('../lib/server');
+  server.listen(process.env.HUB_PORT || 3333, function(){
+    console.log("Starting hub server on port "+server.address().port);
+    console.log("Running: component install "+args)
+    var exec = require('child_process').exec;
+    var child = exec('component install '+args, function(err, stdout, stderr) {
+      console.log(stdout)
+      console.log(stderr)
+      if (err !== null) {
+        console.log('exec error: ' + err);
+      }
+      server.close()
+    });
+  });
+});

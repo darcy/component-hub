@@ -1,0 +1,4 @@
+{
+  "me/otherproject": "git@assembla.com:otherproject.git",
+  "company/secretproject": "git@secretlocation.com:secretproject.git"
+}

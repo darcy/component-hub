@@ -1,0 +1,19 @@
+{
+    "name": "component-hub"
+  , "version": "0.0.1"
+  , "description": "Maps git repos to GitHub-style paths for remote component installs"
+  , "author": "Darcy Brown <darcy@darcybrown.com>"
+  , "dependencies": {
+      "express": "2.5.8"
+      , "commander": "1.0.5"
+      , "win-fork": "1.0.0"
+      , "mkdirp": "0.3.4"
+  }
+  , "bin": {
+    "hub": "bin/hub"
+    ,"hub-install": "bin/hub-install"
+  }
+  , "engines": {
+    "node": ">= 0.8.0"
+  }
+}
