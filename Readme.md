@@ -19,12 +19,16 @@ Component Hub is an addon for [component](https://github.com/component/component
 
 ## Server Usage
 
-  `$ node app.js`
+```
+$ node app.js
+```
 
 
 ## NPM Install
 
-  `$ npm install -g component-hub`
+```
+$ npm install -g component-hub
+```
 
 
 ## NPM Usage
@@ -38,8 +42,8 @@ Once this is in place, you can run `hub install` from the directory where you wo
 
  1. Using the HUB_REPOS_JSON environment variable.
  2. `~/.component-hub/hub.json` 
- 3a. The app directory of the hub server if running as a server.
- 3b. The directory of the project you are in if running as command.
+ 3. The app directory of the hub server if running as a server.
+ 4. The directory of the project you are in if running as command.
 
 Sample contents of the hub.json:
 
